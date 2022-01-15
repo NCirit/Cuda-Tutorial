@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{09dbbbb6-374a-4985-9cd0-014fe520589b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\common\common.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\cuda_common.cuh">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
