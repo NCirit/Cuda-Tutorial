@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cuda4MemoryTransfers", "Cud
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CudaParallelAdditionOfArrays", "CudaParallelAdditionOfArrays\CudaParallelAdditionOfArrays.vcxproj", "{B0969F4F-D49D-41C4-AB52-3282D8A69233}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CudaErrorHandling", "CudaErrorHandling\CudaErrorHandling.vcxproj", "{D7E00BE4-409C-450C-A966-3D494F8F5205}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -85,6 +87,12 @@ Global
 		{B0969F4F-D49D-41C4-AB52-3282D8A69233}.Release|x64.ActiveCfg = Release|x64
 		{B0969F4F-D49D-41C4-AB52-3282D8A69233}.Release|x64.Build.0 = Release|x64
 		{B0969F4F-D49D-41C4-AB52-3282D8A69233}.Release|x86.ActiveCfg = Release|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Debug|x64.ActiveCfg = Debug|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Debug|x64.Build.0 = Debug|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Debug|x86.ActiveCfg = Debug|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Release|x64.ActiveCfg = Release|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Release|x64.Build.0 = Release|x64
+		{D7E00BE4-409C-450C-A966-3D494F8F5205}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
