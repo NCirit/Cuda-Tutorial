@@ -51,7 +51,28 @@ void sumArraysOnCpu(int* a, int* b, int* c, int size)
 
 int main()
 {
-    int size = 10000;
+
+    /*
+        Genel olarak endüstriyal cuda uygulamalarda;
+            Execution time
+            Power consumption
+            Floor space
+            Cost of hardware
+        gibi kriterler performasn ölçümünde kullanılır.
+    
+    */
+
+    /*
+        Trail and Error yöntemi
+
+        Bu yöntemde aynı kernel farklı blok konfigrasyonları
+        ile çalıştırılarak, execution time'lar hesaplanır.
+        Bu sayede farklı konfigrasyonlardan execution time'ı en
+        düşük konfigrasyon seçilir.
+    
+    */
+
+    int size = 100000;
 
     int blockSize = 128;
 
@@ -88,9 +109,17 @@ int main()
     CudaErrorCheck(cudaMalloc((int**)&pDeviceB, numberOfBytes));
     CudaErrorCheck(cudaMalloc((int**)&pDeviceResult, numberOfBytes));
 
+    // Ilgili islemin ne kadar surdugunu ogrenmek icin
+    clock_t cpuStart, cpuEnd;
+    cpuStart = clock();
+    sumArraysOnCpu(pHostA, pHostB, pHostResultsFromCPU, size);
+    cpuEnd = clock();
+
+    clock_t hostToDeviceStart, hostToDeviceEnd;
+    hostToDeviceStart = clock();
     CudaErrorCheck(cudaMemcpy(pDeviceA, pHostA, numberOfBytes, cudaMemcpyHostToDevice));
     CudaErrorCheck(cudaMemcpy(pDeviceB, pHostB, numberOfBytes, cudaMemcpyHostToDevice));
-
+    hostToDeviceEnd = clock();
 
     dim3 block(blockSize);
 
@@ -103,23 +132,37 @@ int main()
     // gerekiyor.
     dim3 grid((size / block.x) + 1);
 
-
+    clock_t gpuStart, gpuEnd;
+    gpuStart = clock();
     sumArraysKernel << <grid, block >> > (pDeviceA, pDeviceB, pDeviceResult, size);
-
-    // Cheking the status of the kernel function call
-    CudaErrorCheck(cudaGetLastError());
-
     // Kernelin calismasinin bitmesini bekle
     CudaErrorCheck(cudaDeviceSynchronize());
+    gpuEnd = clock();
 
+    clock_t deviceToHostStart, deviceToHostEnd;
+    deviceToHostStart = clock();
     // GPU'dan sonuclari geri CPU memory'sine aktar
     CudaErrorCheck(cudaMemcpy(pHostResultsFromGPU, pDeviceResult, numberOfBytes, cudaMemcpyDeviceToHost));
-
-    sumArraysOnCpu(pHostA, pHostB, pHostResultsFromCPU, size);
+    deviceToHostEnd = clock();
 
 
     compareArrays(pHostResultsFromCPU, pHostResultsFromGPU, size);
 
+
+    printf("Sum array CPU execution time: %4.6f \n",
+        (double)((double)(cpuEnd - cpuStart) / CLOCKS_PER_SEC));
+
+    printf("Sum array GPU execution time: %4.6f \n",
+        (double)((double)(gpuEnd - gpuStart) / CLOCKS_PER_SEC));
+
+    printf("Host to device memory transfer time: %4.6f \n",
+        (double)((double)(hostToDeviceEnd - hostToDeviceStart) / CLOCKS_PER_SEC));
+
+    printf("Device to host memory transfer time: %4.6f \n",
+        (double)((double)(deviceToHostEnd - deviceToHostStart) / CLOCKS_PER_SEC));
+
+    printf("GPU total execution time: %4.6f \n",
+        (double)((double)(deviceToHostEnd - hostToDeviceStart) / CLOCKS_PER_SEC));
 
     cudaFree(pDeviceA);
     cudaFree(pDeviceB);

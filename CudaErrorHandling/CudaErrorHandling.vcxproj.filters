@@ -16,4 +16,7 @@
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\common\common.cpp" />
+  </ItemGroup>
 </Project>
